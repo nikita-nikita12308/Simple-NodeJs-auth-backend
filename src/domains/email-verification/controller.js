@@ -1,4 +1,4 @@
-const USER = require("./../user/model");
+const User = require("./../user/model");
 const { sendOTP } = require("./../otp/controller");
 
 
@@ -15,8 +15,11 @@ const sendVerificationOTPEmail = async (email) => {
             duration: 1,
         };
 
-
+        const createdOTP = await sendOTP(otpDetails)
+        return createdOTP
     }catch (e) {
-
+        throw e;
     }
 };
+
+module.exports = { sendVerificationOTPEmail };
