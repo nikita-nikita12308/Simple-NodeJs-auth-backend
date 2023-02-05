@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 const auth = require('./../../middleware/auth');
 const { createNewUser, authenticateUser } = require('./controller');
-
+const { sendVerificationOTPEmail } = require('./../email-verification/controller');
 
 //protected route
 router.get('/private_data', auth, (req,res) => {
-    res.status(200).json(`You are in private territory of ${req.currentUser.email}`);
+    res.status(200).send(`You are in private territory of ${req.currentUser.email}`);
 } );
 
 
@@ -48,6 +48,7 @@ router.post('/signup', async (req,res) => {
         }else {
             //good credentials, create new user
             const newUser = await createNewUser({ name, email, password})
+            await sendVerificationOTPEmail(email);
             res.status(200).json(newUser);
         }
 

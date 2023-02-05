@@ -8,9 +8,8 @@ const authenticateUser = async (data) => {
 
         const fetchedUser = await User.findOne({ email })
 
-        if(!fetchedUser){
-            throw Error("Invalid email entered");
-        }
+        if(!fetchedUser) throw Error("Invalid email entered");
+        if(!fetchedUser.verified) throw Error("Email hasn't been verified yet. Check your inbox");
 
         const hashedPassword = await fetchedUser.password;
         const passwordMatch = await verifyHashData(password, hashedPassword);
