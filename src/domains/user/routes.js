@@ -3,6 +3,7 @@ const router = express.Router();
 const auth = require('./../../middleware/auth');
 const { createNewUser, authenticateUser } = require('./controller');
 
+
 //protected route
 router.get('/private_data', auth, (req,res) => {
     res.status(200).json(`You are in private territory of ${req.currentUser.email}`);
