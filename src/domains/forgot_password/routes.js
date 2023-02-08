@@ -1,6 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const { sendPasswordResetOTPEmail } = require("./controller");
+const { sendPasswordResetOTPEmail, resetPassword } = require("./controller");
+
+router.post('/reset', async (req,res) => {
+    try{
+
+        let { email, otp, newPassword } = req.body;
+        if(!(email && otp && newPassword)) throw Error("Empty credentials are not provided");
+        await resetPassword({ email, otp, newPassword });
+        res.status(200).json({email, passwordreset: true })
+
+    }catch (e) {
+        res.status(400).send(e.message);
+    }
+});
 
 router.post("/", async (req, res) => {
     try{
